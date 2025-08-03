@@ -2,15 +2,13 @@ name: Pull request to unstable
 
 on:
   pull_request:
-    types: [opened]
+    types: [opened, reopened]
     branches:
       - unstable
 
 jobs:
   build:
     runs-on: ubuntu-24.04
-    env:
-      VCS_PAT: ${{secrets.VCS_PAT}}
     steps:
       - run: |
           echo "REPOSITORY_OWNER=$(jq -r .repository.owner.login $GITHUB_EVENT_PATH)" >> $GITHUB_ENV
@@ -18,9 +16,14 @@ jobs:
           echo "SOURCE_COMMIT=$(jq -r .pull_request.head.sha $GITHUB_EVENT_PATH)" >> $GITHUB_ENV
       - run: |
           git init
-          git remote add origin "https://${VCS_PAT}@github.com/${REPOSITORY_OWNER}/${REPOSITORY_NAME}.git"
+          git remote add origin "https://github.com/${REPOSITORY_OWNER}/${REPOSITORY_NAME}.git"
           git fetch --depth=1 origin "${SOURCE_COMMIT}"
           git checkout FETCH_HEAD
-      - run: |
+      - env:
+          VCS_PAT: ${{secrets.VCS_PAT}}
+        run: |
           ls -al
-          .github/sh/pr/unstable.sh
+          ls -al .github
+          ls -al .github/sh
+          ls -al .github/sh/pr
+          bash .github/sh/pr/unstable.sh

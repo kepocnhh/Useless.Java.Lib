@@ -2,7 +2,7 @@ name: Pull request to unstable
 
 on:
   pull_request:
-    types: [opened]
+    types: [opened, reopened]
     branches:
       - unstable
 
@@ -16,6 +16,11 @@ jobs:
           echo "SOURCE_COMMIT=$(jq -r .pull_request.head.sha $GITHUB_EVENT_PATH)" >> $GITHUB_ENV
       - run: |
           git init
-          git remote add origin "https://${{secrets.VCS_PAT}}@github.com/${REPOSITORY_OWNER}/${REPOSITORY_NAME}.git"
+          git remote add origin "https://github.com/${REPOSITORY_OWNER}/${REPOSITORY_NAME}.git"
           git fetch --depth=1 origin "${SOURCE_COMMIT}"
           git checkout FETCH_HEAD
+      - env:
+          VCS_PAT: ${{secrets.VCS_PAT}}
+        run: |
+          cp -r .github/sh/unstable .
+          bash .github/sh/pr/unstable.sh

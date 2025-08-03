@@ -102,4 +102,20 @@ val compileKotlinTask = tasks.getByName<KotlinCompile>("compileKotlin") {
             println("POM: ${file.absolutePath}")
         }
     }
+    tasks.create("assemble", variant, "Metadata") {
+        doLast {
+            val file = buildDir()
+                .dir("yml")
+                .file("metadata.yml")
+                .assemble(
+                    """
+                        repository:
+                         owner: '${gh.owner}'
+                         name: '${gh.name}'
+                        version: '$version'
+                    """.trimIndent(),
+                )
+            println("Metadata: ${file.absolutePath}")
+        }
+    }
 }

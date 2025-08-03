@@ -16,5 +16,5 @@ jobs:
            -e REPOSITORY_NAME="${{github.event.repository.name}}" \
            -e SOURCE_COMMIT="${{github.event.pull_request.head.sha}}" \
            -e VCS_PAT="${{secrets.VCS_PAT}}" \
-           -id --name container docker.io/kepocnhh/ci-java-lib-amd64:0.1b
+           -id --name container docker.io/kepocnhh/ci-java-lib-amd64:0.2b
           docker exec container /usr/local/bin/bash -c unstable/vcs/pr.sh

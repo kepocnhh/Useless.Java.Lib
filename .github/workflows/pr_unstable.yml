@@ -12,8 +12,8 @@ jobs:
     steps:
       - run: |
           docker run \
-           -e REPOSITORY_NAME="${{github.event.repository.owner.login}}" \
-           -e REPOSITORY_OWNER="${{github.event.repository.name}}" \
+           -e REPOSITORY_OWNER="${{github.event.repository.owner.login}}" \
+           -e REPOSITORY_NAME="${{github.event.repository.name}}" \
            -e SOURCE_COMMIT="${{github.event.pull_request.head.sha}}" \
            -e VCS_PAT="${{secrets.VCS_PAT}}" \
            -id --name container docker.io/kepocnhh/ci-java-lib-amd64:0.1b

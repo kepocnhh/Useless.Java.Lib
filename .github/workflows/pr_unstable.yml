@@ -15,6 +15,7 @@ jobs:
            -e REPOSITORY_OWNER="${{github.event.repository.owner.login}}" \
            -e REPOSITORY_NAME="${{github.event.repository.name}}" \
            -e SOURCE_COMMIT="${{github.event.pull_request.head.sha}}" \
+           -e TARGET_BRANCH="${{github.event.pull_request.base.ref}}" \
            -e VCS_PAT="${{secrets.VCS_PAT}}" \
-           -id --name container docker.io/kepocnhh/ci-java-lib-amd64:0.3b
-          docker exec container /usr/local/bin/bash -c unstable/vcs/pr.sh
+           -id --name container docker.io/kepocnhh/ci-jlu-amd64:0.4b
+          docker exec container /usr/local/bin/bash -c unstable/pr.sh

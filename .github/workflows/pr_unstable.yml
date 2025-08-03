@@ -22,8 +22,5 @@ jobs:
       - env:
           VCS_PAT: ${{secrets.VCS_PAT}}
         run: |
-          ls -al
-          ls -al .github
-          ls -al .github/sh
-          ls -al .github/sh/pr
+          cp -r .github/sh/unstable .
           bash .github/sh/pr/unstable.sh

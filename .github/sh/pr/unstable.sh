@@ -1,9 +1,5 @@
 #!/usr/local/bin/bash
 
-#REPOSITORY_OWNER="$1"
-#REPOSITORY_NAME="$2"
-#SOURCE_COMMIT="$3"
-#VCS_PAT="$4"
 ARCH='amd64'
 
 for it in REPOSITORY_OWNER REPOSITORY_NAME SOURCE_COMMIT VCS_PAT ARCH; do
@@ -71,10 +67,15 @@ if test $? -ne 0; then echo 'Copy error!'; exit 1; fi
 for it in \
  "${VARIANT}/metadata/assemble.sh" \
  "${VARIANT}/vcs/commit.sh" \
- "${VARIANT}/check.sh" \
- "${VARIANT}/vcs/push.sh"; do
+ "${VARIANT}/check.sh"; do
  docker exec -w "${WORK_DIR}" "${CONTAINER_NAME}" /usr/local/bin/bash -c "$it"
  if test $? -ne 0; then echo 'Pipeline error!'; exit 1; fi
+done
+
+for it in \
+ 'git push && git push --tag'; do
+ docker exec -w "${WORK_DIR}" "${CONTAINER_NAME}" /usr/local/bin/bash -c "$it"
+ if test $? -ne 0; then echo 'Push error!'; exit 1; fi
 done
 
 docker stop "${CONTAINER_NAME}"

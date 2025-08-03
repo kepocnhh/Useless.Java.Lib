@@ -17,5 +17,5 @@ jobs:
       - env:
           VCS_PAT: ${{secrets.VCS_PAT}}
         run: |
-          docker run --platform='linux/amd64' -id --name container "docker.io/kepocnhh/ci-java-lib-amd64/0.1b"
-          docker exec container /usr/local/bin/bash -c 'unstable/vcs/pr.sh'
+          docker run -id --name container kepocnhh/ci-java-lib-amd64/0.1b
+          docker exec container /usr/local/bin/bash -c unstable/vcs/pr.sh

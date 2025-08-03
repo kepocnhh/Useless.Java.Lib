@@ -1,0 +1,20 @@
+name: Pull request to unstable
+
+on:
+  pull_request:
+    types: [opened, reopened]
+    branches:
+      - unstable
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: |
+          docker run \
+           -e REPOSITORY_OWNER="${{github.event.repository.owner.login}}" \
+           -e REPOSITORY_NAME="${{github.event.repository.name}}" \
+           -e SOURCE_COMMIT="${{github.event.pull_request.head.sha}}" \
+           -e VCS_PAT="${{secrets.VCS_PAT}}" \
+           -id --name container docker.io/kepocnhh/ci-java-lib-amd64:0.3b
+          docker exec container /usr/local/bin/bash -c unstable/vcs/pr.sh

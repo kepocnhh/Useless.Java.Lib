@@ -1,7 +1,7 @@
 package org.kepocnhh.useless
 
 object Foo {
-    fun getZero(): Int {
-        return 0
+    fun getNumber(): Int {
+        return 1
     }
 }

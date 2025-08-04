@@ -18,7 +18,7 @@ val maven = Maven.Artifact(
 )
 
 val gh = GitHub.Repository(
-    owner = "StanleyProjects",
+    owner = "kepocnhh",
     name = rootProject.name,
 )
 

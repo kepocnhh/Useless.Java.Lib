@@ -10,7 +10,9 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     steps:
-      - run: |
+      - env:
+          KEYSTORE_PASSWORD: 'foobarbaz'
+        run: |
           docker run \
            -e REPOSITORY_OWNER='${{github.event.repository.owner.login}}' \
            -e REPOSITORY_NAME='${{github.event.repository.name}}' \
@@ -20,5 +22,6 @@ jobs:
            -e KEYSTORE='.mt/keystore.pkcs12' \
            -e KEY_ALIAS='debug' \
            -id --name container 'docker.io/kepocnhh/multitool-amd64:0.3.1c'
+          echo 'Not implemented!'; exit 1
           docker exec container /usr/local/bin/bash -c 'echo "${{secrets.KEYSTORE}}" | base64 -d > ${KEYSTORE}'
           docker exec container /usr/local/bin/bash -c '$mt/java/lib/unstable/pr.sh'

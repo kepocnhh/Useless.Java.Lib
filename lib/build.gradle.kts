@@ -10,7 +10,7 @@ import sp.gx.core.check
 import sp.gx.core.create
 import sp.gx.core.task
 
-version = "0.0.8"
+version = "0.0.9"
 
 val maven = Maven.Artifact(
     group = "com.github.kepocnhh",
@@ -18,7 +18,7 @@ val maven = Maven.Artifact(
 )
 
 val gh = GitHub.Repository(
-    owner = "StanleyProjects",
+    owner = "kepocnhh",
     name = rootProject.name,
 )
 

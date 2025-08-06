@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - env:
-          KEYSTORE_PASSWORD: 'foobarbaz'
+          KEYSTORE_PASSWORD: "${{secrets.KEYSTORE_PASSWORD}}"
         run: |
           docker run \
            -e REPOSITORY_OWNER='${{github.event.repository.owner.login}}' \
@@ -20,6 +20,7 @@ jobs:
            -e TARGET_BRANCH='${{github.event.pull_request.base.ref}}' \
            -e VCS_PAT='${{secrets.VCS_PAT}}' \
            -e KEYSTORE='.mt/keystore.pkcs12' \
+           -e KEYSTORE_PASSWORD="${KEYSTORE_PASSWORD}" \
            -e KEY_ALIAS='debug' \
            -id --name container 'docker.io/kepocnhh/multitool-amd64:0.3.1c'
           echo 'Not implemented!'; exit 1

@@ -17,5 +17,9 @@ jobs:
            -e SOURCE_COMMIT="${{github.event.pull_request.head.sha}}" \
            -e TARGET_BRANCH="${{github.event.pull_request.base.ref}}" \
            -e VCS_PAT="${{secrets.VCS_PAT}}" \
+           -e KEYSTORE='.mt/debug.pkcs12' \
+           -e KEYSTORE_PASSWORD="${{secrets.KEYSTORE_PASSWORD}}" \
+           -e KEY_ALIAS="${{secrets.KEY_ALIAS}}" \
            -id --name container docker.io/kepocnhh/multitool-amd64:0.3.1c
+          docker exec container /usr/local/bin/bash -c "echo '${{secrets.KEYSTORE}}' | base64 --decode -o ${KEYSTORE}"
           docker exec container /usr/local/bin/bash -c '$mt/java/lib/unstable/pr.sh'

@@ -21,5 +21,4 @@ jobs:
            -e KEYSTORE_PASSWORD='${{secrets.KEYSTORE_PASSWORD}}' \
            -e KEY_ALIAS='${{secrets.KEY_ALIAS}}' \
            -id --name container 'docker.io/kepocnhh/multitool-amd64:0.3.1c'
-          docker exec container /usr/local/bin/bash -c 'echo ${{secrets.KEYSTORE}} | base64 --decode -o ${KEYSTORE}'
           docker exec container /usr/local/bin/bash -c '$mt/java/lib/unstable/pr.sh'

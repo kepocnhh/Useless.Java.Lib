@@ -18,6 +18,7 @@ jobs:
            -e REPOSITORY_NAME='${{github.event.repository.name}}' \
            -e SOURCE_COMMIT='${{github.event.pull_request.head.sha}}' \
            -e TARGET_BRANCH='${{github.event.pull_request.base.ref}}' \
+           -e TARGET_COMMIT='${{github.event.pull_request.base.sha}}' \
            -e VCS_PAT='${{secrets.VCS_PAT}}' \
            -e KEYSTORE='.mt/keystore.pkcs12' \
            -e KEYSTORE_PASSWORD="${KEYSTORE_PASSWORD}" \

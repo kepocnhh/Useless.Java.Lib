@@ -22,6 +22,9 @@ jobs:
            -e KEYSTORE='.mt/keystore.pkcs12' \
            -e KEYSTORE_PASSWORD="${KEYSTORE_PASSWORD}" \
            -e KEY_ALIAS='debug' \
-           -id --name container 'docker.io/kepocnhh/multitool-amd64:0.3.1c'
+           -e TG_BOT_ID='${{secrets.TG_BOT_ID}}' \
+           -e TG_BOT_TOKEN='${{secrets.TG_BOT_TOKEN}}' \
+           -e TG_CHAT_ID='${{secrets.TG_CHAT_ID}}' \
+           -id --name container 'docker.io/kepocnhh/multitool-amd64:0.4.0c'
           docker exec container /usr/local/bin/bash -c 'echo "${{secrets.KEYSTORE}}" | base64 -d > ${KEYSTORE}'
           docker exec container /usr/local/bin/bash -c '$mt/java/lib/unstable/pr.sh'

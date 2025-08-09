@@ -39,17 +39,10 @@ val compileKotlinTask = tasks.getByName<KotlinCompile>("compileKotlin") {
     val version = "${version}u-SNAPSHOT"
     tasks.create("check", variant, "Readme") {
         doLast {
-            val badge = Markdown.image(
-                text = "version",
-                url = Badge.url(
-                    label = "version",
-                    message = version,
-                    color = "2962ff",
-                ),
-            )
             val expected = setOf(
-                badge,
-                Markdown.link("Maven", Maven.Snapshot.url(maven, version)),
+//                "GitHub $version", // todo GitHub release
+//                Markdown.link("Maven", Maven.Snapshot.url(maven, version)), // todo maven url
+                "maven(\"https://central.sonatype.com/repository/maven-snapshots\")", // todo maven import
                 "implementation(\"${maven.moduleName(version)}\")",
             )
             rootDir.resolve("README.md").check(

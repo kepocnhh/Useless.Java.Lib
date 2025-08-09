@@ -1,7 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import sp.gx.core.Badge
 import sp.gx.core.GitHub
-import sp.gx.core.Markdown
 import sp.gx.core.Maven
 import sp.gx.core.asFile
 import sp.gx.core.assemble
@@ -40,7 +38,7 @@ val compileKotlinTask = tasks.getByName<KotlinCompile>("compileKotlin") {
     tasks.create("check", variant, "Readme") {
         doLast {
             val expected = setOf(
-//                "GitHub $version", // todo GitHub release
+                "GitHub [$version]", // todo GitHub release
 //                Markdown.link("Maven", Maven.Snapshot.url(maven, version)), // todo maven url
                 "maven(\"https://central.sonatype.com/repository/maven-snapshots\")", // todo maven import
                 "implementation(\"${maven.moduleName(version)}\")",

@@ -1,7 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import sp.gx.core.Badge
 import sp.gx.core.GitHub
-import sp.gx.core.Markdown
 import sp.gx.core.Maven
 import sp.gx.core.asFile
 import sp.gx.core.assemble
@@ -10,7 +8,7 @@ import sp.gx.core.check
 import sp.gx.core.create
 import sp.gx.core.task
 
-version = "0.2.4"
+version = "0.2.5"
 
 val maven = Maven.Artifact(
     group = "com.github.kepocnhh",
@@ -39,17 +37,10 @@ val compileKotlinTask = tasks.getByName<KotlinCompile>("compileKotlin") {
     val version = "${version}u-SNAPSHOT"
     tasks.create("check", variant, "Readme") {
         doLast {
-            val badge = Markdown.image(
-                text = "version",
-                url = Badge.url(
-                    label = "version",
-                    message = version,
-                    color = "2962ff",
-                ),
-            )
             val expected = setOf(
-                badge,
-                Markdown.link("Maven", Maven.Snapshot.url(maven, version)),
+                "GitHub [$version]", // todo GitHub release
+//                Markdown.link("Maven", Maven.Snapshot.url(maven, version)), // todo maven url
+                "maven(\"https://central.sonatype.com/repository/maven-snapshots\")", // todo maven import
                 "implementation(\"${maven.moduleName(version)}\")",
             )
             rootDir.resolve("README.md").check(

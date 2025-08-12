@@ -13,7 +13,7 @@ import sp.gx.core.eff
 import sp.gx.core.getByName
 import sp.gx.core.task
 
-version = "0.4.0"
+version = "0.4.1"
 
 val maven = Maven.Artifact(
     group = "com.github.kepocnhh",
@@ -135,7 +135,7 @@ task<Detekt>("checkCodeQuality") {
     tasks.create("check", variant, "Readme") {
         doLast {
             val expected = setOf(
-                "GitHub [$version]", // todo GitHub release
+                "GitHub [$version](https://github.com/${gh.owner}/${gh.name}/releases/tag/$version)", // todo GitHub release
 //                Markdown.link("Maven", Maven.Snapshot.url(maven, version)), // todo maven url
                 "maven(\"https://central.sonatype.com/repository/maven-snapshots\")", // todo maven import
                 "implementation(\"${maven.moduleName(version)}\")",

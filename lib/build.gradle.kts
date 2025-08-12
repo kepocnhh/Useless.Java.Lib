@@ -1,12 +1,16 @@
+import io.gitlab.arturbosch.detekt.Detekt
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import sp.gx.core.GitHub
 import sp.gx.core.Maven
 import sp.gx.core.asFile
 import sp.gx.core.assemble
 import sp.gx.core.buildDir
+import sp.gx.core.buildSrc
 import sp.gx.core.check
 import sp.gx.core.create
+import sp.gx.core.dir
 import sp.gx.core.eff
+import sp.gx.core.getByName
 import sp.gx.core.task
 
 version = "0.4.0"
@@ -26,6 +30,7 @@ repositories.mavenCentral()
 plugins {
     id("org.jetbrains.kotlin.jvm")
     id("org.gradle.jacoco")
+    id("io.gitlab.arturbosch.detekt") version Version.detekt
 }
 
 val compileKotlinTask = tasks.getByName<KotlinCompile>("compileKotlin") {
@@ -95,6 +100,34 @@ task<JacocoCoverageVerification>("checkCoverage") {
     }
     classDirectories.setFrom(taskCoverageReport.classDirectories)
     executionData(taskCoverageReport.executionData)
+}
+
+task<Detekt>("checkCodeQuality") {
+    buildUponDefaultConfig = true
+    allRules = true
+    jvmTarget = Version.jvmTarget
+    val sourceSet = sourceSets.getByName("main")
+    source = sourceSet.allSource
+    val configs = setOf(buildSrc.dir("src/main/resources/detekt").eff("config.yml"))
+    config.setFrom(configs)
+    val report = buildDir()
+        .dir("reports/analysis/code/quality/${sourceSet.name}/html")
+        .asFile("index.html")
+    reports {
+        html {
+            required = true
+            outputLocation = report
+        }
+        md.required = false
+        sarif.required = false
+        txt.required = false
+        xml.required = false
+    }
+    val detektTask = tasks.getByName<Detekt>("detekt", sourceSet.name)
+    classpath.setFrom(detektTask.classpath)
+    doFirst {
+        println("Analysis report: ${report.absolutePath}")
+    }
 }
 
 "unstable".also { variant ->

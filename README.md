@@ -29,7 +29,7 @@ dependencies {
 
 ## Unstable
 
-> GitHub [0.3.8u-SNAPSHOT](https://github.com/kepocnhh/Useless.Java.Lib/releases/tag/0.2.4u-SNAPSHOT) release
+> GitHub [0.4.1u-SNAPSHOT](https://github.com/kepocnhh/Useless.Java.Lib/releases/tag/0.4.1u-SNAPSHOT) release
 > 
 > ...there should be a link to [Maven](https://central.sonatype.com) here
 
@@ -45,7 +45,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.kepocnhh:Useless.Java.Lib:0.3.8u-SNAPSHOT")
+    implementation("com.github.kepocnhh:Useless.Java.Lib:0.4.1u-SNAPSHOT")
 }
 ```
 

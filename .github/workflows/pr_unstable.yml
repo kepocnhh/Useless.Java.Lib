@@ -13,6 +13,7 @@ jobs:
       - env:
           KEYSTORE_PASSWORD: "${{secrets.KEYSTORE_PASSWORD}}"
           MVN_SNAPSHOT_PASSWORD: "${{secrets.MVN_SNAPSHOT_PASSWORD}}"
+          GPG_PASSWORD: "${{secrets.GPG_PASSWORD}}"
         run: |
           docker run \
            -e REPOSITORY_OWNER='${{github.event.repository.owner.login}}' \
@@ -29,6 +30,9 @@ jobs:
            -e TG_CHAT_ID='${{secrets.TG_CHAT_ID}}' \
            -e MVN_SNAPSHOT_USER="${{secrets.MVN_SNAPSHOT_USER}}" \
            -e MVN_SNAPSHOT_PASSWORD="${MVN_SNAPSHOT_PASSWORD}" \
-           -id --name container 'docker.io/kepocnhh/multitool-amd64:0.5.0c'
+           -e GPG_KEY='.mt/key.gpg' \
+           -e GPG_PASSWORD="${GPG_PASSWORD}" \
+           -id --name container 'docker.io/kepocnhh/multitool-0.6.2-amd64:6d'
           docker exec container /usr/local/bin/bash -c 'echo "${{secrets.KEYSTORE}}" | base64 -d > ${KEYSTORE}'
+          docker exec container /usr/local/bin/bash -c 'echo "${{secrets.GPG_KEY}}" > "${GPG_KEY}"'
           docker exec container /usr/local/bin/bash -c '$mt/java/lib/unstable/pr.sh'

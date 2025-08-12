@@ -6,6 +6,7 @@ import sp.gx.core.assemble
 import sp.gx.core.buildDir
 import sp.gx.core.check
 import sp.gx.core.create
+import sp.gx.core.eff
 import sp.gx.core.task
 
 version = "0.4.0"
@@ -24,12 +25,42 @@ repositories.mavenCentral()
 
 plugins {
     id("org.jetbrains.kotlin.jvm")
+    id("org.gradle.jacoco")
 }
 
 val compileKotlinTask = tasks.getByName<KotlinCompile>("compileKotlin") {
     kotlinOptions {
         jvmTarget = Version.jvmTarget
         freeCompilerArgs += setOf("-module-name", maven.moduleName())
+    }
+}
+
+tasks.getByName<JavaCompile>("compileTestJava") {
+    targetCompatibility = Version.jvmTarget
+}
+
+tasks.getByName<KotlinCompile>("compileTestKotlin") {
+    kotlinOptions.jvmTarget = Version.jvmTarget
+}
+
+dependencies {
+    testImplementation("org.junit.jupiter:junit-jupiter-api:${Version.jupiter}")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${Version.jupiter}")
+}
+
+fun Test.getExecutionData(): File {
+    return buildDir()
+        .dir("jacoco")
+        .asFile("$name.exec")
+}
+
+val taskUnitTest = task<Test>("checkUnitTest") {
+    useJUnitPlatform()
+    testClassesDirs = sourceSets.test.get().output.classesDirs
+    classpath = sourceSets.test.get().runtimeClasspath
+    jvmArgs("--add-opens=java.base/java.lang=ALL-UNNAMED") // https://github.com/gradle/gradle/issues/18647
+    doLast {
+        getExecutionData().eff()
     }
 }
 

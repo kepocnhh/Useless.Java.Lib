@@ -1,7 +1,9 @@
 package org.kepocnhh.useless
 
 object Foo {
-    fun getZero(): Int {
-        return 0
+    fun getNumber(): Int {
+        return Number
     }
+
+    private const val Number = 1
 }

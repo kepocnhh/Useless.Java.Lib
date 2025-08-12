@@ -13,7 +13,7 @@ import sp.gx.core.eff
 import sp.gx.core.getByName
 import sp.gx.core.task
 
-version = "0.4.1"
+version = "0.4.2"
 
 val maven = Maven.Artifact(
     group = "com.github.kepocnhh",

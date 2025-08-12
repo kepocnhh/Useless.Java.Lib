@@ -1,10 +1,10 @@
-name: Pull request to unstable
+name: Pull request to snapshot
 
 on:
   pull_request:
     types: [opened, reopened]
     branches:
-      - unstable
+      - snapshot
 
 jobs:
   build:
@@ -35,4 +35,4 @@ jobs:
            -id --name container 'docker.io/kepocnhh/multitool-0.7.0-amd64:7d'
           docker exec container /usr/local/bin/bash -c 'echo "${{secrets.KEYSTORE}}" | base64 -d > ${KEYSTORE}'
           docker exec container /usr/local/bin/bash -c 'echo "${{secrets.GPG_KEY}}" > "${GPG_KEY}"'
-          docker exec container /usr/local/bin/bash -c '$mt/java/lib/unstable/pr.sh'
+          docker exec container /usr/local/bin/bash -c '$mt/java/lib/snapshot/pr.sh'

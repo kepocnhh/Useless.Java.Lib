@@ -110,3 +110,65 @@ val compileKotlinTask = tasks.getByName<KotlinCompile>("compileKotlin") {
         }
     }
 }
+
+"snapshot".also { variant ->
+    val version = "$version-SNAPSHOT"
+    tasks.create("assemble", variant, "Metadata") {
+        doLast {
+            val file = buildDir()
+                .dir("yml")
+                .file("metadata.yml")
+                .assemble(
+                    """
+                        repository:
+                         owner: '${gh.owner}'
+                         name: '${gh.name}'
+                        version: '$version'
+                    """.trimIndent(),
+                )
+            println("Metadata: ${file.absolutePath}")
+        }
+    }
+    tasks.create("assemble", variant, "MavenMetadata") {
+        doLast {
+            val file = buildDir()
+                .dir("yml")
+                .file("maven-metadata.yml")
+                .assemble(
+                    """
+                        repository:
+                         groupId: '${maven.group}'
+                         artifactId: '${maven.id}'
+                        version: '$version'
+                    """.trimIndent(),
+                )
+            println("Metadata: ${file.absolutePath}")
+        }
+    }
+    task<Jar>("assemble", variant, "Jar") {
+        dependsOn(compileKotlinTask)
+        archiveBaseName = maven.id
+        archiveVersion = version
+        from(compileKotlinTask.destinationDirectory.asFileTree)
+    }
+    task<Jar>("assemble", variant, "Source") {
+        archiveBaseName = maven.id
+        archiveVersion = version
+        archiveClassifier = "sources"
+        from(sourceSets.main.get().allSource)
+    }
+    tasks.create("assemble", variant, "Pom") {
+        doLast {
+            val file = buildDir()
+                .dir("libs")
+                .file("${maven.name(version)}.pom")
+                .assemble(
+                    maven.pom(
+                        version = version,
+                        packaging = "jar",
+                    ),
+                )
+            println("POM: ${file.absolutePath}")
+        }
+    }
+}

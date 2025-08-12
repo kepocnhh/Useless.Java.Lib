@@ -32,7 +32,7 @@ jobs:
            -e MVN_SNAPSHOT_PASSWORD="${MVN_SNAPSHOT_PASSWORD}" \
            -e GPG_KEY='.mt/key.gpg' \
            -e GPG_PASSWORD="${GPG_PASSWORD}" \
-           -id --name container 'docker.io/kepocnhh/multitool-0.6.2-amd64:6d'
+           -id --name container 'docker.io/kepocnhh/multitool-0.7.0-amd64:7d'
           docker exec container /usr/local/bin/bash -c 'echo "${{secrets.KEYSTORE}}" | base64 -d > ${KEYSTORE}'
           docker exec container /usr/local/bin/bash -c 'echo "${{secrets.GPG_KEY}}" > "${GPG_KEY}"'
           docker exec container /usr/local/bin/bash -c '$mt/java/lib/unstable/pr.sh'

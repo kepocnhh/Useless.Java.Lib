@@ -64,6 +64,26 @@ val taskUnitTest = task<Test>("checkUnitTest") {
     }
 }
 
+jacoco.toolVersion = Version.jacoco
+
+val taskCoverageReport = task<JacocoReport>("assembleCoverageReport") {
+    dependsOn(taskUnitTest)
+    reports {
+        csv.required = false
+        html.required = true
+        xml.required = false
+    }
+    sourceDirectories.setFrom(file("src/main/kotlin"))
+    classDirectories.setFrom(sourceSets.main.get().output.classesDirs)
+    executionData(taskUnitTest.getExecutionData())
+    doLast {
+        val report = buildDir()
+            .dir("reports/jacoco/$name/html")
+            .eff("index.html")
+        println("Coverage report: ${report.absolutePath}")
+    }
+}
+
 "unstable".also { variant ->
     val version = "${version}u-SNAPSHOT"
     tasks.create("check", variant, "Readme") {
